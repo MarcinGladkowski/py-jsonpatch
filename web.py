@@ -5,7 +5,7 @@ from os import path, remove
 from glob import glob
 
 import json
-import patch_lib
+from patch_lib import JsonPath, PatchError
 
 DIR = dir_path = path.dirname(path.realpath(__file__))
 app = Flask(__name__)
@@ -87,8 +87,9 @@ def patch_document(name):
         return jsonify(error=str(exp)), 400
 
     try:
-        new_data = patch_lib.patch_document(data, commands)
-    except patch_lib.PatchError as exp:
+        json_path = JsonPath()
+        new_data = json_path.patch_document(data, commands)
+    except PatchError as exp:
         return jsonify(error=str(exp)), 400
 
     _write_file(name, new_data)

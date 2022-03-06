@@ -1,12 +1,12 @@
 from web import app
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 
 patch_load_file = patch('web._load_file')
 patch_write_file = patch('web._write_file')
 patch_remove_file = patch('web._remove_file')
-patch_lib = patch('web.patch_lib')
+patch_lib = Mock()
 
 
 @pytest.fixture
