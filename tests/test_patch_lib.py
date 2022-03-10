@@ -7,7 +7,8 @@ import pytest
     ({"test": "test"}, {"path": "/foo", "value": "bar"}, {"test": "test", "foo": "bar"}),
     ({"foo": ["baz"]}, {"path": "/foo", "value": "bar"}, {"foo": ["baz", "bar"]}),
     ({}, {"path": "/foo/bar", "value": "baz"}, {"foo": {"bar": "baz"}}),
-    # ({}, {"path": "foo/bar/baz", "value": "baz"}, {"foo": {"bar": {"baz": "baz"}}}),
+    ({"test": "test"}, {"path": "/test/bar", "value": "baz"}, {"test": {"bar": "baz"}}),
+    ({}, {"path": "/foo/bar/baz", "value": "baz"}, {"foo": {"bar": {"baz": "baz"}}}),
 ])
 def test_add_command(document, command, result):
     assert (Add()).execute(document, command) == result

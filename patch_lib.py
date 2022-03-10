@@ -32,8 +32,9 @@ class Add:
             path_keys = re.split(pattern, path)
 
             for index, key in enumerate(path_keys):
+
                 if len(path_keys) > index + 1:
-                    document[key] = {path_keys[index+1]: new_value}
+                    document[path_keys[index]] = {path_keys[index+1]: new_value}
                     return document
 
             return document
@@ -45,6 +46,9 @@ class Add:
             path_value.append(new_value)
             return document
 
+        """
+        Add single key: value
+        """
         document[path] = new_value
 
         return document
