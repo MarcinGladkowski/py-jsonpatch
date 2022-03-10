@@ -24,20 +24,16 @@ class Add:
         new_value = command.get("value")
 
         """
-        Set tested value
+        json path is always valid, but for paths element/element/ 
+        we have to know should we create or add value
         """
         pattern = re.compile("/")
         if pattern.search(path):
             path_keys = re.split(pattern, path)
 
             for index, key in enumerate(path_keys):
-                value = None
-                if len(path_keys) >= index + 1:
-                    value = new_value
-
-                document[key] = {path_keys[index+1]: value}
-
-                if len(path_keys) >= index+1:
+                if len(path_keys) > index + 1:
+                    document[key] = {path_keys[index+1]: new_value}
                     return document
 
             return document
@@ -53,8 +49,11 @@ class Add:
 
         return document
 
-    def _get_path(self, command: dict):
-        return command.get("path")
+    def _get_path(self, command: dict) -> str:
+        """
+         with remove front slash
+        """
+        return command.get("path").replace('/', '', 1)
 
     def _get_document_path_value(self, document: dict, path: str):
         return document.get(path)

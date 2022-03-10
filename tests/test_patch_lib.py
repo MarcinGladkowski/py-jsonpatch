@@ -3,12 +3,13 @@ import pytest
 
 
 @pytest.mark.parametrize("document, command, result", [
-    ({}, {"path": "foo", "value": "bar"}, {"foo": "bar"}),
-    ({"test": "test"}, {"path": "foo", "value": "bar"}, {"test": "test", "foo": "bar"}),
-    ({"foo": ["baz"]}, {"path": "foo", "value": "bar"}, {"foo": ["baz", "bar"]}),
-    ({}, {"path": "foo/bar", "value": "baz"}, {"foo": {"bar": "baz"}})
+    ({}, {"path": "/foo", "value": "bar"}, {"foo": "bar"}),
+    ({"test": "test"}, {"path": "/foo", "value": "bar"}, {"test": "test", "foo": "bar"}),
+    ({"foo": ["baz"]}, {"path": "/foo", "value": "bar"}, {"foo": ["baz", "bar"]}),
+    ({}, {"path": "/foo/bar", "value": "baz"}, {"foo": {"bar": "baz"}}),
+    # ({}, {"path": "foo/bar/baz", "value": "baz"}, {"foo": {"bar": {"baz": "baz"}}}),
 ])
-def test_is_palindrome(document, command, result):
+def test_add_command(document, command, result):
     assert (Add()).execute(document, command) == result
 
 
