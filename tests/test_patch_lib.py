@@ -1,4 +1,15 @@
 from patch_lib import JsonPath, Add
+import pytest
+
+
+@pytest.mark.parametrize("document, command, result", [
+    ({}, {"path": "foo", "value": "bar"}, {"foo": "bar"}),
+    ({"test": "test"}, {"path": "foo", "value": "bar"}, {"test": "test", "foo": "bar"}),
+    ({"foo": ["baz"]}, {"path": "foo", "value": "bar"}, {"foo": ["baz", "bar"]}),
+    ({}, {"path": "foo/bar", "value": "baz"}, {"foo": {"bar": "baz"}})
+])
+def test_is_palindrome(document, command, result):
+    assert (Add()).execute(document, command) == result
 
 
 def test_not_modified_document():
@@ -7,22 +18,4 @@ def test_not_modified_document():
     assert document == {"test": "test"}
 
 
-def test_add_operation_to_empty_document():
-    add = Add()
-    assert add.execute({}, {"path": "foo", "value": "bar"}) == {"foo": "bar"}
 
-
-def test_add_operation_to_not_empty_document():
-    add = Add()
-    assert add.execute({"test": "test"}, {"path": "foo", "value": "bar"}) == {"test": "test", "foo": "bar"}
-
-
-def test_add_operation_to_array_value():
-    add = Add()
-    assert add.execute({"foo": ["baz"]}, {"path": "foo", "value": "bar"}) == {"foo": ["baz", "bar"]}
-
-
-def test_add_operation_nested_path():
-    add = Add()
-    result = add.execute({}, {"path": "foo/bar", "value": "baz"})
-    assert result == {"foo": {"bar": "baz"}}
