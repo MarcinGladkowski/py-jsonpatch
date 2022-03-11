@@ -1,6 +1,7 @@
 from typing import List
 import re
 
+
 class PatchError(Exception):
     pass
 
@@ -14,6 +15,15 @@ class JsonPath:
         return document
         if "something_is_wrong":
             raise PatchError('something is wrong, dude')
+
+
+class Test:
+    """
+    Tests that the specified value is set in the document.
+    If the test fails, then the patch as a whole should not apply.
+    """
+    def execute(self, document: dict, command: dict):
+        raise RuntimeError
 
 
 class Add:
@@ -34,7 +44,7 @@ class Add:
             for index, key in enumerate(path_keys):
 
                 if len(path_keys) > index + 1:
-                    document[path_keys[index]] = {path_keys[index+1]: new_value}
+                    document[path_keys[index]] = {path_keys[index + 1]: new_value}
                     return document
 
             return document
@@ -61,4 +71,3 @@ class Add:
 
     def _get_document_path_value(self, document: dict, path: str):
         return document.get(path)
-
