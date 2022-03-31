@@ -22,7 +22,7 @@ class TestAdd:
         assert self.add.execute({"foo": ["baz"]}, {"path": "foo", "value": "bar"}) == {"foo": ["baz", "bar"]}
 
     def test_add_operation_nested_path(self):
-        # incorrect operation, shouldn't create elements recursively
+        """incorrect operation, shouldn't create elements recursively"""
         with pytest.raises(PathError):
             self.add.execute({}, {"path": "foo/bar", "value": "baz"})
 
