@@ -1,4 +1,6 @@
-from patch_lib import JsonPath, Add
+import pytest
+
+from patch_lib import JsonPath, Add, PathError
 
 
 class TestAdd:
@@ -20,5 +22,7 @@ class TestAdd:
         assert self.add.execute({"foo": ["baz"]}, {"path": "foo", "value": "bar"}) == {"foo": ["baz", "bar"]}
 
     def test_add_operation_nested_path(self):
-        result = self.add.execute({}, {"path": "foo/bar", "value": "baz"})
-        assert result == {"foo": {"bar": "baz"}}
+        # incorrect operation, shouldn't create elements recursively
+        with pytest.raises(PathError):
+            self.add.execute({}, {"path": "foo/bar", "value": "baz"})
+

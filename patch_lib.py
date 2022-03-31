@@ -1,7 +1,8 @@
 from typing import List
 import re
 
-class PatchError(Exception):
+
+class PathError(Exception):
     pass
 
 
@@ -13,7 +14,7 @@ class JsonPath:
     def patch_document(self, document: dict, commands: List[dict]):
         return document
         if "something_is_wrong":
-            raise PatchError('something is wrong, dude')
+            raise PathError('something is wrong, dude')
 
 
 class Add:
@@ -32,9 +33,9 @@ class Add:
                 if len(path_keys) >= index + 1:
                     value = new_value
 
-                document[key] = {path_keys[index+1]: value}
+                document[key] = {path_keys[index + 1]: value}
 
-                if len(path_keys) >= index+1:
+                if len(path_keys) >= index + 1:
                     return document
 
             return document
@@ -52,4 +53,3 @@ class Add:
 
     def _get_document_path_value(self, document: dict, path: str):
         return document.get(path)
-
