@@ -29,10 +29,16 @@ class Test:
 class Add:
     def execute(self, document: dict, command: dict):
 
-        path = self._get_path(command)
-        path_value = self._get_document_path_value(document, path)
-        new_value = command.get("value")
+        paths = self._get_path(command)
 
+        if len(paths) > 1:
+            for i, path in enumerate(paths):
+                element = document.get(path)
+                if element is None:
+                    raise PathError
+
+        path_value = self._get_document_path_value(document, paths[0])
+        new_value = command.get("value")
 
         """Set element to exist array"""
         if path_value and isinstance(path_value, list):
@@ -40,7 +46,7 @@ class Add:
             return document
 
         """Add single key: value"""
-        document[path] = new_value
+        document[paths[0]] = new_value
 
 
         """Set element to exist array"""
@@ -50,11 +56,15 @@ class Add:
 
         return document
 
-    def _get_path(self, command: dict) -> str:
-        """
-         with remove front slash
-        """
-        return command.get("path").replace('/', '', 1)
+    def _get_path(self, command: dict) -> list:
+        """with remove front slash"""
+
+        command_path = command.get('path')
+
+        if command_path.startswith('/'):
+            command_path = command.get("path").replace('/', '', 1)
+
+        return command_path.split('/')
 
     def _get_document_path_value(self, document: dict, path: str):
         return document.get(path)
