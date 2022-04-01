@@ -33,37 +33,14 @@ class Add:
         path_value = self._get_document_path_value(document, path)
         new_value = command.get("value")
 
-        """
-        json path is always valid, but for paths element/element/ 
-        we have to know should we create or add value
-        """
-        pattern = re.compile("/")
-        if pattern.search(path):
-            path_keys = re.split(pattern, path)
+        """Add single key: value"""
+        document[path] = new_value
 
-            for index, key in enumerate(path_keys):
-                value = None
-                if len(path_keys) >= index + 1:
-                    value = new_value
 
-                document[key] = {path_keys[index+1]: value}
-
-                if len(path_keys) >= index+1:
-                    return document
-
-            return document
-
-        """
-            Set element to exist array
-        """
+        """Set element to exist array"""
         if path_value and isinstance(path_value, list):
             path_value.append(new_value)
             return document
-
-        """
-        Add single key: value
-        """
-        document[path] = new_value
 
         return document
 
