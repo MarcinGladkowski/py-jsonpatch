@@ -33,6 +33,12 @@ class Add:
         path_value = self._get_document_path_value(document, path)
         new_value = command.get("value")
 
+
+        """Set element to exist array"""
+        if path_value and isinstance(path_value, list):
+            path_value.append(new_value)
+            return document
+
         """Add single key: value"""
         document[path] = new_value
 
